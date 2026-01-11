@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Core System - Estudo</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body class="bg-[#09090b] text-zinc-200 font-sans antialiased">
+
+    <nav class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-[#09090b]/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="flex items-center gap-6">
+            <span class="font-mono font-bold tracking-tighter text-emerald-500 text-lg">SYSTEM_CORE</span>
+            <div class="hidden md:flex gap-4 text-xs font-medium text-zinc-500">
+                <a href="#" class="hover:text-white transition">DASHBOARD</a>
+                <a href="#" class="hover:text-white transition text-white">CICLO</a>
+                <a href="#" class="hover:text-white transition">EDITAL</a>
+                <a href="#" class="hover:text-white transition">MÉTRICAS</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-mono">
+            <span class="text-zinc-500">ESTADO: <span class="text-emerald-500 underline">SYNC_OK</span></span>
+            <button class="bg-zinc-800 hover:bg-zinc-700 px-3 py-1 rounded border border-zinc-700">BACKUP</button>
+        </div>
+    </nav>
+
+    <div class="max-w-[1600px] mx-auto p-6">
+        
+        <div class="grid grid-cols-12 gap-6">
+            
+            <div class="col-span-12 lg:col-span-7 space-y-6">
+                
+                <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-8 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+                    
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 class="text-zinc-500 text-xs font-bold uppercase tracking-widest">Sessão Ativa</h2>
+                            <p class="text-2xl font-bold italic text-white">Direito Administrativo</p>
+                            <span class="text-xs bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded border border-emerald-500/20">Teoria</span>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-zinc-500 text-[10px] font-mono">CICLO ATUAL: 04/12</p>
+                            <p class="text-xs font-bold text-zinc-300 italic">Próximo: Raciocínio Lógico</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col items-center py-6">
+                        <div class="text-[120px] font-mono leading-none font-black tracking-tighter text-white selection:bg-emerald-500">
+                            24:59
+                        </div>
+                        <div class="flex gap-3 mt-8">
+                            <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-12 py-4 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
+                                FOCUS (1 CLIQUE)
+                            </button>
+                            <button class="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 px-6 py-4 rounded-lg font-bold">
+                                INTERROMPER
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 mt-8 border-t border-zinc-800 pt-6">
+                        <button class="bg-zinc-950 p-3 rounded border border-zinc-800 hover:border-emerald-500 transition group">
+                            <p class="text-[10px] text-zinc-500 group-hover:text-emerald-500">QUESTÕES</p>
+                            <p class="text-sm font-bold">15 respondidas</p>
+                        </button>
+                        <button class="bg-zinc-950 p-3 rounded border border-zinc-800 hover:border-emerald-500 transition group text-left italic">
+                            <p class="text-[10px] text-zinc-500 group-hover:text-emerald-500">MODO</p>
+                            <p class="text-sm font-bold">Pomodoro (50/10)</p>
+                        </button>
+                        <button class="bg-zinc-950 p-3 rounded border border-zinc-800 hover:border-emerald-500 transition group text-left italic">
+                            <p class="text-[10px] text-zinc-500 group-hover:text-emerald-500">ALERTA</p>
+                            <p class="text-sm font-bold">Silencioso</p>
+                        </button>
+                        <button class="bg-zinc-950 p-3 rounded border border-zinc-800 hover:border-emerald-500 transition group text-left italic">
+                            <p class="text-[10px] text-zinc-500 group-hover:text-emerald-500">META DIA</p>
+                            <p class="text-sm font-bold text-emerald-500">62%</p>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+                    <div class="px-4 py-3 border-b border-zinc-800 bg-zinc-800/30 flex justify-between items-center">
+                        <h3 class="text-[10px] font-bold uppercase tracking-tighter text-zinc-400">Linha do Tempo (Hoje)</h3>
+                        <span class="text-[10px] font-mono text-zinc-500 italic">Total: 03:45:12h</span>
+                    </div>
+                    <div class="p-0 font-mono text-xs">
+                        <div class="flex items-center gap-4 px-4 py-2 border-b border-zinc-800/50 hover:bg-zinc-800/20">
+                            <span class="text-zinc-600">08:12</span>
+                            <span class="text-emerald-500">✓ Concluído</span>
+                            <span class="text-zinc-300">Constitucional - 55min (Questões)</span>
+                        </div>
+                        <div class="flex items-center gap-4 px-4 py-2 border-b border-zinc-800/50 hover:bg-zinc-800/20">
+                            <span class="text-zinc-600">09:40</span>
+                            <span class="text-amber-500">! Pausado</span>
+                            <span class="text-zinc-300">Português - 22min (Teoria)</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="col-span-12 lg:col-span-5 space-y-6">
+                
+                <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-4 flex justify-between">
+                        Revisões Críticas 
+                        <span class="text-amber-500 bg-amber-500/10 px-2 rounded tracking-normal italic">04 Atrasadas</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-zinc-950 border border-zinc-800 rounded group hover:border-amber-500/50 transition cursor-pointer">
+                            <div>
+                                <p class="text-sm font-bold text-zinc-200 uppercase tracking-tighter">Atos Administrativos</p>
+                                <p class="text-[10px] text-zinc-500 italic">Vencimento: 24h atrás</p>
+                            </div>
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition">
+                                <button class="bg-emerald-900/20 text-emerald-500 border border-emerald-500/20 text-[10px] px-2 py-1 rounded">FEITO</button>
+                                <button class="bg-zinc-800 text-zinc-400 border border-zinc-700 text-[10px] px-2 py-1 rounded">ADICIONAR AO CICLO</button>
+                            </div>
+                        </div>
+                        </div>
+                </section>
+
+                <section class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 italic">
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-500 mb-6">Status do Edital (Ponderado)</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-[10px] font-mono mb-2 uppercase">
+                                <span>Dir. Constitucional</span>
+                                <span class="text-emerald-500">88%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden border border-zinc-700">
+                                <div class="h-full bg-emerald-500 w-[88%] shadow-[0_0_10px_rgba(16,185,129,0.3)]"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-[10px] font-mono mb-2 uppercase">
+                                <span>Informática</span>
+                                <span class="text-amber-500">32%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden border border-zinc-700">
+                                <div class="h-full bg-amber-500 w-[32%]"></div>
+                            </div>
+                        </div>
+                        <button class="w-full py-2 text-[10px] font-bold text-zinc-500 border border-zinc-800 hover:border-zinc-700 hover:text-zinc-300 transition">
+                            VER MAPA COMPLETO DO EDITAL
+                        </button>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-tighter italic font-bold">Eficiência Questões</p>
+                        <p class="text-2xl font-mono text-white">74.2%</p>
+                    </div>
+                    <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl">
+                        <p class="text-[10px] text-zinc-500 uppercase tracking-tighter italic font-bold">Média Semanal</p>
+                        <p class="text-2xl font-mono text-white">04:22h</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+<script src="wasabi.js"></script>
+</body>
+</html>

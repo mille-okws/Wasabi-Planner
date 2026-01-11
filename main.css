@@ -1,0 +1,104 @@
+/* Importação da fonte de código para aspecto técnico */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
+
+:root {
+    --bg: #09090b;
+    --card: #121214;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --zinc-800: #27272a;
+    --zinc-500: #71717a;
+    --glow: rgba(16, 185, 129, 0.2);
+}
+
+/* Base e Background com Grid Sutil */
+body {
+    background-color: var(--bg);
+    background-image: radial-gradient(circle at 1px 1px, #18181b 1px, transparent 0);
+    background-size: 32px 32px;
+    color: #e4e4e7;
+    overflow-x: hidden;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Animação do Timer Ativo */
+.timer-running {
+    animation: pulse-active 2s infinite ease-in-out;
+    color: #fff;
+    text-shadow: 0 0 20px var(--glow);
+}
+
+@keyframes pulse-active {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+}
+
+/* Estilização de Cards com Glassmorphism */
+section {
+    background: rgba(18, 18, 20, 0.7) !important;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+section:hover {
+    border-color: var(--zinc-500);
+}
+
+/* Barras de Progresso com Glow */
+.progress-bar-fill {
+    box-shadow: 0 0 10px var(--glow);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Botões com Feedback Tátil */
+button {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Scrollbar Minimalista */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--zinc-800);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--zinc-500);
+}
+
+/* Linha do Tempo (Log) - Efeito de entrada */
+#timeline-container > div {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Ajustes de Responsividade para Mobile */
+@media (max-width: 768px) {
+    .text-\[120px\] {
+        font-size: 70px;
+    }
+    
+    .grid-cols-4 {
+        grid-template-cols: 1fr 1fr;
+    }
+}
