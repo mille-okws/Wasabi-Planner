@@ -1,164 +1,210 @@
-/**
- * CORE SYSTEM - STUDY ENGINE
- * Gerenciamento de Estado, Timer e Persistência
- */
+document.addEventListener("DOMContentLoaded", () => {
 
-const StudyEngine = {
-    // 1. ESTADO INICIAL
-    state: {
-        isRunning: false,
-        seconds: 1500, // 25 min padrão
-        currentSubject: "Direito Administrativo",
-        currentMode: "Pomodoro",
-        sessionStartTime: null,
-        history: JSON.parse(localStorage.getItem('study_history')) || [],
-        settings: {
-            focusTime: 25,
-            shortBreak: 5,
-            longBreak: 15
-        }
-    },
+  /* ================== CONSTANTES / DADOS ================== */
+  const SUBJECTS = [
+    { id: "termodinamica", name: "Termodinâmica" },
+    { id: "mecanica-calor", name: "Mecânica / Calor" },
+    { id: "resistencia-dinamica", name: "Resistência / Dinâmica" },
+    { id: "metalurgia-materiais", name: "Metalurgia / Materiais" },
+    { id: "fabricacao-instrumentacao", name: "Fabricação / Instrumentação" },
+    { id: "auxiliares", name: "Auxiliares" },
+    { id: "direito-penal", name: "Direito Penal" },
+    { id: "constitucional-administrativo", name: "Const. / Administrativo" },
+    { id: "criminalistica", name: "Criminalística" },
+    { id: "medicina-legal", name: "Medicina Legal" }
+  ];
 
-    // 2. INICIALIZAÇÃO
-    init() {
-        this.cacheDOM();
-        this.bindEvents();
-        this.loadState();
-        this.updateUI();
-        console.log("🚀 System_Core: Engine Ready");
-    },
+  const CONFIG_KEY = "cycle-config";
+  const DIST_KEY = "cycle-distribution";
+  const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-    cacheDOM() {
-        this.dom = {
-            timer: document.querySelector('.font-mono.text-\\[120px\\]'),
-            startBtn: document.querySelector('.bg-emerald-600'),
-            stopBtn: document.querySelector('.bg-zinc-800.border-zinc-700'),
-            subjectDisplay: document.querySelector('.text-2xl.font-bold.italic'),
-            timeline: document.querySelector('.p-0.font-mono.text-xs')
-        };
-    },
+  /* ================== ELEMENTOS DO DOM ================== */
+  const dailyInput = document.getElementById("daily-hours");
+  const daysButtons = document.querySelectorAll(".weekdays button");
+  const subjectsContainer = document.getElementById("cycle-subjects");
+  const weekPreview = document.getElementById("week-preview");
 
-    bindEvents() {
-        this.dom.startBtn.addEventListener('click', () => this.toggleTimer());
-        this.dom.stopBtn.addEventListener('click', () => this.stopTimer());
-        
-        // Atalho de teclado: Espaço para Start/Pause
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                this.toggleTimer();
-            }
-        });
-    },
+  // Elementos do Header/Resumo
+  const hoursDayEl = document.getElementById("hours-per-day");
+  const hoursWeekEl = document.getElementById("hours-per-week");
+  const percentUsedEl = document.getElementById("percent-used");
+  const percentBarEl = document.getElementById("percent-bar");
+  const cycleEndEl = document.getElementById("cycle-end");
 
-    // 3. LÓGICA DO CRONÔMETRO
-    toggleTimer() {
-        if (this.state.isRunning) {
-            this.pauseTimer();
-        } else {
-            this.startTimer();
-        }
-    },
+  // Botões de Ação
+  const saveBtn = document.getElementById("save-cycle");
+  const resetBtn = document.getElementById("reset-cycle");
 
-    startTimer() {
-        this.state.isRunning = true;
-        this.state.sessionStartTime = new Date();
-        this.dom.timer.classList.add('timer-running');
-        this.dom.startBtn.textContent = "PAUSAR (ESPAÇO)";
-        this.dom.startBtn.classList.replace('bg-emerald-600', 'bg-amber-600');
+  /* ================== ESTADO (DATA) ================== */
+  let config = JSON.parse(localStorage.getItem(CONFIG_KEY)) || {
+    dailyHours: 6,
+    activeDays: [1, 2, 3, 4, 5] 
+  };
 
-        this.ticker = setInterval(() => {
-            if (this.state.seconds > 0) {
-                this.state.seconds--;
-                this.updateUI();
-                if (this.state.seconds % 30 === 0) this.saveState(); // Auto-save a cada 30s
-            } else {
-                this.completeSession();
-            }
-        }, 1000);
-    },
+  let distribution = JSON.parse(localStorage.getItem(DIST_KEY)) || {};
 
-    pauseTimer() {
-        this.state.isRunning = false;
-        clearInterval(this.ticker);
-        this.dom.timer.classList.remove('timer-running');
-        this.dom.startBtn.textContent = "RETOMAR";
-        this.dom.startBtn.classList.replace('bg-amber-600', 'bg-emerald-600');
-        this.saveState();
-    },
+  /* ================== FUNÇÕES DE APOIO ================== */
+  function getWeeklyHours() {
+    return config.dailyHours * config.activeDays.length;
+  }
 
-    stopTimer() {
-        if (confirm("Deseja interromper a sessão atual? Os dados serão salvos até aqui.")) {
-            this.completeSession();
-        }
-    },
+  function getTotalPercentUsed() {
+    return Object.values(distribution).reduce((a, b) => a + b, 0);
+  }
 
-    // 4. PERSISTÊNCIA E HISTÓRICO
-    completeSession() {
-        this.pauseTimer();
-        
-        const sessionData = {
-            id: Date.now(),
-            subject: this.state.currentSubject,
-            duration: this.calculateElapsed(),
-            date: new Date().toLocaleDateString(),
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-        };
+  function getCycleEndDate() {
+    const today = new Date();
+    const end = new Date(today);
+    end.setDate(today.getDate() + 7);
+    return end.toLocaleDateString("pt-BR");
+  }
 
-        this.state.history.unshift(sessionData);
-        localStorage.setItem('study_history', JSON.stringify(this.state.history));
-        
-        this.renderTimeline();
-        this.resetTimer();
-        alert(`Sessão finalizada: ${sessionData.duration} de estudo registrados.`);
-    },
+  function saveToLocalStorage() {
+    localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
+    localStorage.setItem(DIST_KEY, JSON.stringify(distribution));
+  }
 
-    // 5. UTILITÁRIOS DE UI
-    updateUI() {
-        const m = Math.floor(this.state.seconds / 60);
-        const s = this.state.seconds % 60;
-        this.dom.timer.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        document.title = `${this.dom.timer.textContent} - ${this.state.currentSubject}`;
-    },
+  /* ================== RENDERIZAÇÃO ================== */
 
-    renderTimeline() {
-        this.dom.timeline.innerHTML = this.state.history.slice(0, 5).map(item => `
-            <div class="flex items-center gap-4 px-4 py-2 border-b border-zinc-800/50 hover:bg-zinc-800/20">
-                <span class="text-zinc-600">${item.time}</span>
-                <span class="text-emerald-500">✓ Concluído</span>
-                <span class="text-zinc-300">${item.subject} - ${item.duration}</span>
-            </div>
-        `).join('');
-    },
+  function updateUI() {
+    const totalPercent = getTotalPercentUsed();
+    const weeklyHrs = getWeeklyHours();
 
-    calculateElapsed() {
-        // Cálculo simples para o histórico
-        const total = (this.state.settings.focusTime * 60) - this.state.seconds;
-        const m = Math.floor(total / 60);
-        return `${m}min`;
-    },
-
-    resetTimer() {
-        this.state.seconds = this.state.settings.focusTime * 60;
-        this.updateUI();
-    },
-
-    saveState() {
-        localStorage.setItem('core_state', JSON.stringify({
-            seconds: this.state.seconds,
-            currentSubject: this.state.currentSubject
-        }));
-    },
-
-    loadState() {
-        const saved = JSON.parse(localStorage.getItem('core_state'));
-        if (saved) {
-            this.state.seconds = saved.seconds;
-            this.state.currentSubject = saved.currentSubject;
-        }
-        this.renderTimeline();
+    // Atualiza Resumo no Topo
+    if (hoursDayEl) hoursDayEl.textContent = config.dailyHours;
+    if (hoursWeekEl) hoursWeekEl.textContent = weeklyHrs;
+    if (percentUsedEl) percentUsedEl.textContent = `${totalPercent}%`;
+    if (cycleEndEl) cycleEndEl.textContent = getCycleEndDate();
+    
+    // Atualiza Barra de Progresso
+    if (percentBarEl) {
+      percentBarEl.style.width = `${totalPercent}%`;
+      percentBarEl.style.backgroundColor = totalPercent > 100 ? "#e74c3c" : "#2ecc71";
     }
-};
 
-// Iniciar quando o DOM carregar
-document.addEventListener('DOMContentLoaded', () => StudyEngine.init());
+    renderSubjects(weeklyHrs);
+    renderWeekPreview();
+  }
+
+  function renderSubjects(weeklyHrs) {
+    if (!subjectsContainer) return;
+    subjectsContainer.innerHTML = "";
+
+    SUBJECTS.forEach(subject => {
+      const percent = distribution[subject.id] || 0;
+      
+      // CONVERSÃO PARA HORAS INTEIRAS (Math.round)
+      const hours = Math.round((weeklyHrs * percent) / 100);
+
+      const row = document.createElement("div");
+      row.className = "subject-row";
+      row.innerHTML = `
+        <span class="subject-name">${subject.name}</span>
+        <div class="percent-controls">
+          <button class="btn-minus" type="button">−</button>
+          <span class="percent-value">${percent}%</span>
+          <button class="btn-plus" type="button">+</button>
+        </div>
+        <span class="subject-hours">${hours}h/sem</span>
+      `;
+
+      // Eventos dos botões +/-
+      row.querySelector(".btn-minus").onclick = () => adjustPercent(subject.id, -5);
+      row.querySelector(".btn-plus").onclick = () => adjustPercent(subject.id, 5);
+
+      subjectsContainer.appendChild(row);
+    });
+  }
+
+  function renderWeekPreview() {
+    if (!weekPreview) return;
+    weekPreview.innerHTML = "";
+
+    // Ordenar dias cronologicamente
+    const sortedDays = [...config.activeDays].sort((a, b) => a - b);
+
+    sortedDays.forEach(day => {
+      const col = document.createElement("div");
+      col.className = "day-column";
+      col.innerHTML = `
+        <strong>${DAYS[day]}</strong>
+        <span>${config.dailyHours}h</span>
+      `;
+      weekPreview.appendChild(col);
+    });
+  }
+
+  /* ================== LÓGICA DE AJUSTE ================== */
+  function adjustPercent(subjectId, delta) {
+    const current = distribution[subjectId] || 0;
+    const totalUsed = getTotalPercentUsed();
+    
+    let next = current + delta;
+    
+    // Validações de limite
+    if (next < 0) next = 0;
+    if (totalUsed - current + next > 100) {
+        alert("O total não pode ultrapassar 100%");
+        return;
+    }
+
+    if (next === 0) delete distribution[subjectId];
+    else distribution[subjectId] = next;
+
+    saveToLocalStorage();
+    updateUI();
+  }
+
+  /* ================== EVENTOS ================== */
+
+  // Input de horas
+  if (dailyInput) {
+    dailyInput.value = config.dailyHours;
+    dailyInput.onchange = () => {
+      config.dailyHours = Math.max(1, Number(dailyInput.value));
+      saveToLocalStorage();
+      updateUI();
+    };
+  }
+
+  // Botões dos dias da semana
+  daysButtons.forEach(btn => {
+    const day = Number(btn.dataset.day);
+    
+    btn.classList.toggle("active", config.activeDays.includes(day));
+
+    btn.onclick = () => {
+      if (config.activeDays.includes(day)) {
+        if (config.activeDays.length > 1) { // Manter pelo menos 1 dia
+          config.activeDays = config.activeDays.filter(d => d !== day);
+        }
+      } else {
+        config.activeDays.push(day);
+      }
+
+      btn.classList.toggle("active", config.activeDays.includes(day));
+      saveToLocalStorage();
+      updateUI();
+    };
+  });
+
+  // Botões de Salvar e Reset
+  if (saveBtn) {
+    saveBtn.onclick = () => {
+      saveToLocalStorage();
+      alert("Ciclo guardado com sucesso!");
+    };
+  }
+
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      if (!confirm("Deseja limpar toda a distribuição do ciclo?")) return;
+      distribution = {};
+      saveToLocalStorage();
+      updateUI();
+    };
+  }
+
+  /* ================== INIT ================== */
+  updateUI();
+});
