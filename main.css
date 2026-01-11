@@ -1,277 +1,219 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+/* Importando fontes clássicas */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+    --deep-green: #1a2f23;
+    --dark-moss: #0d1a12;
+    --parchment: #c9c2b5;
+    --gold: #9e7e4a;
+    --border-ink: #2a3d32;
+    --text-dim: #8e8a82;
 }
 
 body {
-  background: #000;
-  color: #fff;
-  min-height: 100vh;
-  line-height: 1.4;
+    background-color: var(--dark-moss);
+    background-image: radial-gradient(circle at center, #1a2f23 0%, #0d1a12 100%);
+    color: var(--parchment);
+    font-family: 'EB Garamond', serif;
+    margin: 0;
+    line-height: 1.6;
 }
 
-/* ---------------- NAV ---------------- */
-
+/* Navegação Estilo Biblioteca */
 .main-nav {
-  border-bottom: 1px solid #222;
-  padding: 14px 16px;
+    border-bottom: 1px solid var(--gold);
+    background: rgba(13, 26, 18, 0.9);
+    padding: 1rem 0;
 }
 
 .nav-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .nav-title {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-}
-
-.nav-toggle {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.3rem;
-  display: none;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
 
 .nav-links {
-  display: flex;
-  gap: 16px;
-  list-style: none;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
-  text-decoration: none;
-  color: #aaa;
-  font-size: 0.85rem;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: 0.3s;
 }
 
-.nav-links a.active,
-.nav-links a:hover {
-  color: #fff;
+.nav-links a.active, .nav-links a:hover {
+    color: var(--gold);
+    text-shadow: 0 0 8px rgba(158, 126, 74, 0.4);
 }
 
-/* ---------------- HEADER ---------------- */
-
+/* Header e Títulos */
 header {
-  padding: 20px 16px;
-  border-bottom: 1px solid #222;
+    text-align: center;
+    padding: 40px 20px;
 }
 
-.header-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    color: var(--parchment);
 }
 
 .subtitle {
-  font-size: 0.8rem;
-  color: #888;
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.1rem;
 }
 
+/* Resumo do Ciclo */
 .cycle-summary {
-  margin-top: 12px;
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  font-size: 0.8rem;
-  color: #bbb;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 20px 0;
+    font-size: 1rem;
 }
 
-/* ---------------- CONTAINER ---------------- */
+.cycle-summary strong {
+    color: var(--gold);
+}
 
+/* Barra de Progresso Orgânica */
+.global-progress {
+    width: 60%;
+    height: 4px;
+    background: var(--border-ink);
+    margin: 20px auto;
+    border-radius: 2px;
+}
+
+.global-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    box-shadow: 0 0 15px var(--gold);
+}
+
+/* Painéis (Efeito de Papel Antigo Escuro) */
 .container {
-  padding: 20px 16px 100px;
-  display: grid;
-  gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
 }
-
-/* ---------------- PANELS ---------------- */
 
 .panel {
-  border: 1px solid #1a1a1a;
-  border-radius: 12px;
-  padding: 16px;
-  background: #0a0a0a;
+    background: rgba(26, 47, 35, 0.4);
+    border: 1px solid var(--border-ink);
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 4px;
+    position: relative;
 }
 
-.panel h3 {
-  font-size: 0.95rem;
-  margin-bottom: 14px;
-  font-weight: 500;
+.panel::before {
+    content: "❧";
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: var(--gold);
+    opacity: 0.5;
 }
 
-/* ---------------- CONFIG ---------------- */
-
-.config-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border-ink);
+    padding-bottom: 10px;
+    margin-top: 0;
 }
 
-.config-item label {
-  display: block;
-  font-size: 0.75rem;
-  color: #aaa;
-  margin-bottom: 6px;
-}
-
-.config-item input {
-  width: 100%;
-  background: #000;
-  border: 1px solid #222;
-  color: #fff;
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-}
-
-/* ---------------- WEEKDAYS ---------------- */
-
-.weekdays {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+/* Inputs e Botões */
+input[type="number"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--gold);
+    color: var(--parchment);
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    width: 60px;
+    text-align: center;
 }
 
 .weekdays button {
-  background: #000;
-  border: 1px solid #222;
-  color: #aaa;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.75rem;
-  cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 5px 12px;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    margin: 2px;
+    transition: 0.3s;
 }
 
-.weekdays button.active {
-  background: #fff;
-  color: #000;
-  border-color: #fff;
+.weekdays button:hover, .weekdays button.active {
+    background: var(--gold);
+    color: var(--dark-moss);
 }
 
-/* ---------------- SUBJECTS ---------------- */
-
-.cycle-subjects {
-  display: grid;
-  gap: 10px;
-}
-
-.subject-row {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border: 1px solid #1a1a1a;
-  border-radius: 10px;
-  background: #000;
-}
-
-.subject-name {
-  font-size: 0.85rem;
-}
-
-.percent-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.percent-controls button {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid #222;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.percent-controls span {
-  min-width: 38px;
-  text-align: center;
-  font-size: 0.8rem;
-}
-
-.subject-hours {
-  font-size: 0.75rem;
-  color: #aaa;
-}
-
-/* ---------------- WEEK PREVIEW ---------------- */
-
-.week-preview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  gap: 10px;
-}
-
-.day-column {
-  border: 1px solid #1a1a1a;
-  border-radius: 10px;
-  padding: 10px;
-  background: #000;
-  text-align: center;
-  font-size: 0.75rem;
-}
-
-.day-column strong {
-  display: block;
-  margin-bottom: 4px;
-}
-
-/* ---------------- ACTIONS ---------------- */
-
+/* Botões de Ação */
 .actions {
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    border: none;
+    background: transparent;
 }
 
-.actions button {
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: 1px solid #222;
-  background: #000;
-  color: #fff;
-  cursor: pointer;
-  font-size: 0.8rem;
+button#save-cycle {
+    background: var(--gold);
+    color: var(--dark-moss);
+    border: none;
+    padding: 10px 40px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s;
 }
 
-.actions button:hover {
-  border-color: #fff;
+button#save-cycle:hover {
+    box-shadow: 0 0 20px rgba(158, 126, 74, 0.5);
+    transform: translateY(-2px);
 }
 
-.actions .danger {
-  color: #f55;
-  border-color: #400;
+button.danger {
+    background: transparent;
+    border: 1px solid #7d2e2e;
+    color: #7d2e2e;
+    padding: 10px 20px;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
-
-@media (max-width: 720px) {
-  .nav-links {
-    display: none;
-  }
-
-  .nav-toggle {
-    display: block;
-  }
-
-  .subject-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
+/* Scrollbar Vintage */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--dark-moss);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--border-ink);
+    border: 2px solid var(--dark-moss);
 }
